@@ -49,6 +49,19 @@ public class Carta {
         }
         return NombreCarta.values()[residuo - 1];
     }
-    
+  // NUEVO - Punto 4: retorna el valor de la carta para calcular puntaje
+    // Ace, Jack, Queen y King valen 10; el resto vale su número (2-10)
+    public int getValor() {
+        int residuo = indice % 13;
+        if (residuo == 0) {
+            residuo = 13;
+        }
+        // residuo 1=Ace, 11=Jack, 12=Queen, 13=King → valen 10
+        if (residuo == 1 || residuo >= 11) {
+            return 10;
+        }
+        // 2 al 10 valen su número
+        return residuo;
+    }
 
 }

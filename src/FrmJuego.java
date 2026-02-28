@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,20 +33,18 @@ public class FrmJuego extends JFrame {
 
         pnlJugador1 = new JPanel();
         pnlJugador1.setBackground(new Color(0, 255, 0));
+        pnlJugador1.setLayout(null);
+
         pnlJugador2 = new JPanel();
         pnlJugador2.setBackground(new Color(0, 255, 255));
+        pnlJugador2.setLayout(null);
 
         tpJugadores.add(pnlJugador1, "Martín Estrada Contreras");
         tpJugadores.add(pnlJugador2, "Raul Vidal");
 
-        // eventos
-        btnRepartir.addActionListener(e -> {
-            repartirCartas();
-        });
-        btnVerificar.addActionListener(e -> {
-            verificarGrupos();
-        });
-
+        // Un solo ActionListener por botón
+        btnRepartir.addActionListener(e -> repartirCartas());
+        btnVerificar.addActionListener(e -> verificarGrupos());
     }
 
     private void repartirCartas() {
@@ -58,13 +55,21 @@ public class FrmJuego extends JFrame {
     }
 
     private void verificarGrupos() {
-        String resultado = "";
-        if (tpJugadores.getSelectedIndex() == 0) {
-            resultado = jugador1.getGrupos();
-        }
-        else{
-            resultado = jugador2.getGrupos();
-        }
-        JOptionPane.showMessageDialog(null, resultado);
+        // Determinar qué jugador está seleccionado
+        Jugador jugadorActual = (tpJugadores.getSelectedIndex() == 0) ? jugador1 : jugador2;
+
+        // Armar el mensaje con grupos, escaleras y puntaje
+        String mensaje = "";
+        mensaje += "=== GRUPOS ===\n";
+        mensaje += jugadorActual.getGrupos();
+        mensaje += "\n=== ESCALERAS (misma pinta) ===\n";
+        mensaje += jugadorActual.getEscaleras();
+        mensaje += "\n=== PUNTAJE (cartas sin figura) ===\n";
+        mensaje += "Puntaje: " + jugadorActual.calcularPuntaje();
+        mensaje += "\n=== PUNTAJE TOTAL (todas las cartas) ===\n";
+        mensaje += "Puntaje total: " + jugadorActual.calcularPuntajeTotal();
+
+        JOptionPane.showMessageDialog(null, mensaje);
     }
+
 }
